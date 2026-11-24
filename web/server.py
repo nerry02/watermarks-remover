@@ -34,7 +34,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/healthz":
-            self._proxy("/health", b"{}", max_reply=1024 * 1024)
+            self._json(200, {"ok": True})
             return
         if self.path in ("/", "/index.html"):
             self.path = "/index.html"
@@ -80,7 +80,7 @@ class Handler(SimpleHTTPRequestHandler):
                 status, data = response.status, response.read(max_reply + 1)
         except urllib.error.HTTPError as e:
             status, data = e.code, e.read(max_reply + 1)
-        except (urllib.error.URLError, TimeoutError) as e:
+        except (urllib.error.URLError, TimeoutError):
             self._json(502, {"ok": False, "error": "The cleaner service is unavailable. Check the server connection."})
             return
         if len(data) > max_reply:
