@@ -106,7 +106,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    host = os.environ.get("WEB_HOST", "127.0.0.1")
-    port = int(os.environ.get("WEB_PORT", "8080"))
+    host = os.environ.get("WEB_HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", os.environ.get("WEB_PORT", "8080")))
     print("Nerry's Marks Cleaner listening on %s:%s" % (host, port), flush=True)
     ThreadingHTTPServer((host, port), Handler).serve_forever()
